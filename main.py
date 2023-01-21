@@ -7,7 +7,8 @@ import random, math
 This program ain`t yours mate, you can download it and modify it however you want,
 however you cannot make money without it and also if you want to use it you have to
 mention the program name wherever you use it as well as you have to mention me as the
-creator
+creator under the Attribution-NonCommercial 3.0 Unported (CC BY-NC 3.0) license.
+
 thanks for every person that is being honest with themselves and follows the rules,
 now for the technical aspects:
 
