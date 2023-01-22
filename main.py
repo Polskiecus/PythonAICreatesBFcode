@@ -1,5 +1,6 @@
 from agent_handler import client_handler
 import sys
+import os.path
 
 #Program created by CuS
 
@@ -31,16 +32,40 @@ Have a great time reading the rest of my sh*t code
 Have a nice day :)
 
 '''
+agent_amount = 50
 
-handler = client_handler(50, 400, 10**3, 10, 25)
+ROM_limit = 400#chars/bytes
+CPU_limit = 10 ** 3#memory cycles(how much times tried to modify/get memory data
+RAM_limit = 10#amount of cells(1 byte each)
+complexity = 25#amount of tests per agent per gen
+
+path = "ZESRaiJ\\"
+
+handler = client_handler(agent_amount, ROM_limit, CPU_limit, RAM_limit, complexity)
 print("handler created")
 
 try:
-    handler.load_agents("ZESRaiJ\\")
+    handler.load_agents(path)
     print("agents loaded")
 except:
     print("Could not load agent data")
-    sys.exit(1)
+    print("trying to set the environment")
+
+    #check if save files exist
+    for i in range(0,agent_amount):
+
+        #if do not, create empty files
+        if not os.path.isfile(path+str(i)+".txt"):
+            f = open(path+str(i)+".txt","w")
+            f.close()
+    
+    print("retrying")
+
+    try:
+        handler.load_agents(path)
+    except:
+        print("had problems with setting up")
+        sys.exit(1)
     
 while True:
 
@@ -54,7 +79,7 @@ while True:
         handler.sort_the_agents()
         #and sort them
 
-    handler.save_agents("ZESRaiJ\\")
+    handler.save_agents(path)
     #autosave
 
     print("max: ",max(last_test)," avr: ",sum(last_test)/len(last_test)," min: ",min(last_test))
