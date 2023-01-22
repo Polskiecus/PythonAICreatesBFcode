@@ -88,6 +88,10 @@ while True:
         handler.sort_the_agents()
         #and sort them
 
+        f = open("best.txt","w")
+        f.write(handler.agents[agent_amount-1].code + " ; " +  str(handler.agents[agent_amount-1].last_test))
+        f.close()
+
     handler.save_agents(path)
     #autosave
 

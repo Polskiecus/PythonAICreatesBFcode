@@ -53,7 +53,7 @@ class client_handler:
             kopie.append(agent(item.id, item.ROM_limit, item.CPU_limit, item.RAM_limit))
             kopie[len(kopie)-1].code = item.code
             
-        self.agents = self.agents + kopie
+        self.agents = kopie + self.agents 
 
     #saves all the agents data in a specified folder
     def save_agents(self, path):

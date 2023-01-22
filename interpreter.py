@@ -43,7 +43,8 @@ class emulator:
         self.RAM_MEMORY_CELLS = [0 for item in range(self.RAM_limit)]
 
         self.USED_cycles = 0
-
+        self.error = False
+        
     #this function is being triggered every time any command is an it is being used for determining wheter
     #agent used to much CPU power or not(blocks soft locking by false feedback loops)
     def one_cycle(self):
@@ -55,6 +56,7 @@ class emulator:
     #returns exception code(I know, I am very creative)
     def raise_exception(self):
 
+        self.error = True
         return "U DUMB"
 
     #Increments the cell by a specified amount
@@ -113,7 +115,7 @@ class emulator:
                 self.RAM_MEMORY_CELLS[self.currently_looking_at_cell] = temp
 
             else:
-                return self.raise_exception()
+                return True
             
         return self.one_cycle()
 
