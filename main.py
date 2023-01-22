@@ -45,6 +45,15 @@ handler = client_handler(agent_amount, ROM_limit, CPU_limit, RAM_limit, complexi
 print("handler created")
 
 try:
+    if os.path.isdir(path):
+        pass
+
+    else:
+        os.mkdir(path)    
+except:
+    print("could not create the folder")
+    
+try:
     handler.load_agents(path)
     print("agents loaded")
 except:
