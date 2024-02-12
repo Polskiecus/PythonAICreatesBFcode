@@ -1,6 +1,7 @@
-import math
+import math, random
 from agent_script import agent
 from tests import create_test
+import concurrent.futures
 
 #funtion used specifically for sorting agents by their key using built in sort key function
 def sorter(agent):
@@ -14,8 +15,9 @@ class client_handler:
     #ROM_limit: how long the code can be(how much characters it can use)
     #CPU_limit: how many "CPU CYCLES" the proccess can use(mostly used to avoid soft locking
     #RAM_limit: how much memory cells do you wanna give to every agent
-    def __init__(self,agents_amount,ROM_limit, CPU_limit, RAM_limit, complexity):
-
+    def __init__(self,agents_amount,ROM_limit, CPU_limit, RAM_limit, complexity, single_thread=False):
+        
+        self.single_thread = single_thread
         self.agents_amount = agents_amount
 
         self.ROM_limit = ROM_limit
@@ -36,14 +38,22 @@ class client_handler:
     def test_generation(self):
 
         packet = [create_test() for i in range(self.complexity)]
-        test_outputs = [agent.test_agent(packet) for agent in self.agents]
 
+        if self.single_thread:
+            test_outputs = [agent.test_agent(packet) for agent in self.agents]
+            
+        else:
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                test_futures = [executor.submit(agent.test_agent, packet) for agent in self.agents]
+                test_outputs = [future.result() for future in concurrent.futures.as_completed(test_futures)]
+        
         return test_outputs
 
     #sorts the agents by the firtness value, usess sorter function to do that
     #later on it deletes the bottom 50% and copies the top 50% to merge those togheter
     def sort_the_agents(self):
 
+        random.shuffle(self.agents)
         self.agents.sort(key=sorter)
 
         self.agents = self.agents[self.agents_amount//2:self.agents_amount]
